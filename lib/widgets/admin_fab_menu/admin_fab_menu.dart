@@ -12,15 +12,14 @@ class AdminFabMenu extends StatefulWidget {
 
 class _AdminFabMenuState extends State<AdminFabMenu>
     with SingleTickerProviderStateMixin {
-
   bool _isOpen = false;
   late final AnimationController _controller;
   late final Animation<double> _expandAnim;
 
   final List<_FabItem> _items = const [
-    _FabItem(icon: Icons.home,   label: 'home'),
-    _FabItem(icon: Icons.settings_rounded,     label: 'profile'),
-    _FabItem(icon: Icons.group_rounded,        label: 'Users'),
+    _FabItem(icon: Icons.home, label: 'home'),
+    _FabItem(icon: Icons.person, label: 'profile'),
+    _FabItem(icon: Icons.group_rounded, label: 'Users'),
     _FabItem(icon: Icons.meeting_room_rounded, label: 'Hall'),
   ];
 
@@ -56,37 +55,45 @@ class _AdminFabMenuState extends State<AdminFabMenu>
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // ── Expanded items (animate in from bottom upward) ──
-        ..._items.asMap().entries.map((entry) {
-          final delay = entry.key / _items.length;
-          final itemAnim = Tween<double>(begin: 0, end: 1).animate(
-            CurvedAnimation(
-              parent: _controller,
-              curve: Interval(delay * 0.4, 0.6 + delay * 0.4,
-                  curve: Curves.easeOut),
-            ),
-          );
-
-          return AnimatedBuilder(
-            animation: itemAnim,
-            builder: (_, __) => Opacity(
-              opacity: itemAnim.value,
-              child: Transform.translate(
-                offset: Offset(0, 16 * (1 - itemAnim.value)),
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: _FabItemRow(
-                    item: entry.value,
-                    onTap: () {
-                      _toggle();
-                      widget.onItemTap(entry.key);
-                    },
+        ..._items
+            .asMap()
+            .entries
+            .map((entry) {
+              final delay = entry.key / _items.length;
+              final itemAnim = Tween<double>(begin: 0, end: 1).animate(
+                CurvedAnimation(
+                  parent: _controller,
+                  curve: Interval(
+                    delay * 0.4,
+                    0.6 + delay * 0.4,
+                    curve: Curves.easeOut,
                   ),
                 ),
-              ),
-            ),
-          );
-        }).toList().reversed.toList(), // reversed = bottom item first
+              );
 
+              return AnimatedBuilder(
+                animation: itemAnim,
+                builder: (_, __) => Opacity(
+                  opacity: itemAnim.value,
+                  child: Transform.translate(
+                    offset: Offset(0, 16 * (1 - itemAnim.value)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: _FabItemRow(
+                        item: entry.value,
+                        onTap: () {
+                          _toggle();
+                          widget.onItemTap(entry.key);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            })
+            .toList()
+            .reversed
+            .toList(), // reversed = bottom item first
         // ── Main FAB button ──
         _MainFab(isOpen: _isOpen, onTap: _toggle),
       ],
@@ -108,7 +115,6 @@ class _FabItemRow extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-
           // Round glass icon button
           ClipRRect(
             borderRadius: BorderRadius.circular(25),
@@ -121,11 +127,19 @@ class _FabItemRow extends StatelessWidget {
                   color: const Color.fromARGB(255, 7, 1, 176).withOpacity(0.5),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.45),
+                    color: const Color.fromARGB(
+                      255,
+                      255,
+                      255,
+                      255,
+                    ).withOpacity(0.45),
                   ),
                 ),
-                child: Icon(item.icon,
-                    color: const Color.fromARGB(255, 255, 255, 255), size: 22),
+                child: Icon(
+                  item.icon,
+                  color: const Color.fromARGB(255, 255, 255, 255),
+                  size: 22,
+                ),
               ),
             ),
           ),
@@ -138,10 +152,12 @@ class _FabItemRow extends StatelessWidget {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
-                  color:const Color.fromARGB(255, 7, 1, 176).withOpacity(0.5),
+                  color: const Color.fromARGB(255, 7, 1, 176).withOpacity(0.5),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: const Color(0xFF7F77DD).withOpacity(0.3),
@@ -181,20 +197,16 @@ class _MainFab extends StatelessWidget {
         width: 54,
         height: 54,
         decoration: BoxDecoration(
-          color: isOpen
-              ? const Color(0xFF534AB7)
-              : const Color(0xFF7F77DD),
+          color: isOpen ? const Color(0xFF534AB7) : const Color(0xFF7F77DD),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: Colors.white.withOpacity(0.2),
-          ),
+          border: Border.all(color: Colors.white.withOpacity(0.2)),
         ),
         child: AnimatedRotation(
-          turns: isOpen ? 0.125 : 0, // 45°
+          turns: isOpen ? 0.50 : 0, // 45°
           duration: const Duration(milliseconds: 300),
           curve: Curves.easeInOut,
           child: Icon(
-            isOpen ? Icons.close_rounded : Icons.menu_rounded,
+            isOpen ? Icons.close : Icons.menu_rounded,
             color: Colors.white,
             size: 24,
           ),
