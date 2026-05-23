@@ -42,7 +42,6 @@ class _MainScreenState extends State<MainScreen> {
     _userPages = [
       Home(scrollController: scrollController), // 0
       Booking(),                                // 1
-                                    // 2
       User(),                                   // 3
     ];
 

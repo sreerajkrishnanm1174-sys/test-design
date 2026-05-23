@@ -18,8 +18,8 @@ class _AdminFabMenuState extends State<AdminFabMenu>
   late final Animation<double> _expandAnim;
 
   final List<_FabItem> _items = const [
-    _FabItem(icon: Icons.analytics_rounded,   label: 'Analytics'),
-    _FabItem(icon: Icons.settings_rounded,     label: 'Settings'),
+    _FabItem(icon: Icons.home,   label: 'home'),
+    _FabItem(icon: Icons.settings_rounded,     label: 'profile'),
     _FabItem(icon: Icons.group_rounded,        label: 'Users'),
     _FabItem(icon: Icons.meeting_room_rounded, label: 'Hall'),
   ];
